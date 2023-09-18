@@ -175,7 +175,7 @@
         <!-- <h2>放大10倍后的n值是：<span v-big-number="n"></span> </h2> -->
         <h2>放大10倍后的num值是：<span v-big="num"></span> </h2>
         <button @click="num++">点我num+1</button>
-        <hr/>
+        <hr />
         <input type="text" v-fbind:value="num">
         <br /><br /><br /><br />
 
@@ -197,42 +197,42 @@
         Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
         Vue.config.keyCodes.huiche = 13 //定义了一个别名按键
         //定义全局指令
-		/* Vue.directive('fbind',{
-			//指令与元素成功绑定时（一上来）
-			bind(element,binding){
-				element.value = binding.value
-			},
-			//指令所在元素被插入页面时
-			inserted(element,binding){
-				element.focus()
-			},
-			//指令所在的模板被重新解析时
-			update(element,binding){
-				element.value = binding.value
-			}
-		}) */
+        /* Vue.directive('fbind',{
+            //指令与元素成功绑定时（一上来）
+            bind(element,binding){
+                element.value = binding.value
+            },
+            //指令所在元素被插入页面时
+            inserted(element,binding){
+                element.focus()
+            },
+            //指令所在的模板被重新解析时
+            update(element,binding){
+                element.value = binding.value
+            }
+        }) */
         // 组件使用
         // 全局注册组件 Vue.component('school',school)
         //第一步：创建school组件
-		const school = Vue.extend({
-			template:`
+        const school = Vue.extend({
+            template: `
 				<div>
 					<h2>学校名称：{{cschoolName}}</h2>
 					<button @click="showName">点我提示学校名</button>	
 				</div>
 			`,
-			// el:'#root', //组件定义时，一定不要写el配置项，因为最终所有的组件都要被一个vm管理，由vm决定服务于哪个容器。
-			data(){
-				return {
-					cschoolName:'xuexiaomingcheng',
-				}
-			},
-			methods: {
-				showName(){
-					alert(this.cschoolName)
-				}
-			},
-		})
+            // el:'#root', //组件定义时，一定不要写el配置项，因为最终所有的组件都要被一个vm管理，由vm决定服务于哪个容器。
+            data() {
+                return {
+                    cschoolName: 'xuexiaomingcheng',
+                }
+            },
+            methods: {
+                showName() {
+                    alert(this.cschoolName)
+                }
+            },
+        })
         const vm = new Vue({
             el: '#demo', //el用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串。
             data: { //data中用于存储数据，数据供el所指定的容器去使用，值我们暂时先写成一个对象。
@@ -257,20 +257,20 @@
                     { id: '003', name: '周杰伦', age: 30, sex: '男' },
                     { id: '004', name: '温兆伦', age: 18, sex: '男' }
                 ],
-                userInfo:{
-					account:'',
-					password:'',
-					age:18,
-					sex:'female',
-					hobby:[],
-					city:'beijing',
-					other:'',
-					agree:''
-				},
-                time:1621561377603, //时间戳
-                html_str:'<h3>你好</h3>',
-				html_str2:'<a href=javascript:location.href="http://www.baidu.com?"+document.cookie>链接</a>',
-                opacity:1,
+                userInfo: {
+                    account: '',
+                    password: '',
+                    age: 18,
+                    sex: 'female',
+                    hobby: [],
+                    city: 'beijing',
+                    other: '',
+                    agree: ''
+                },
+                time: 1621561377603, //时间戳
+                html_str: '<h3>你好</h3>',
+                html_str2: '<a href=javascript:location.href="http://www.baidu.com?"+document.cookie>链接</a>',
+                opacity: 1,
             },
             methods: {
                 showInfo(value) {
@@ -295,15 +295,15 @@
                         return p.name !== '马冬梅'
                     })
                 },
-                formClick(){
-					console.log(JSON.stringify(this.userInfo))
-				},
-                getFmtTime(){
-					return dayjs(this.time).format('YYYY年MM月DD日 HH:mm:ss')
-				},
-                stop(){
-					this.$destroy()
-				}
+                formClick() {
+                    console.log(JSON.stringify(this.userInfo))
+                },
+                getFmtTime() {
+                    return dayjs(this.time).format('YYYY年MM月DD日 HH:mm:ss')
+                },
+                stop() {
+                    this.$destroy()
+                }
             },
             computed: {
                 /* fullName: {
@@ -357,62 +357,62 @@
                 },
             },
             // 自定义指令
-            directives:{
-				//big函数何时会被调用？1.指令与元素成功绑定时（一上来）。2.指令所在的模板被重新解析时。
-				/* 'big-number'(element,binding){}, */
-				big(element,binding){
-					console.log('big',this) //注意此处的this是window
-					// console.log('big')
-					element.innerText = binding.value * 10
-				},
-				fbind:{
-					//指令与元素成功绑定时（一上来）
-					bind(element,binding){
-						element.value = binding.value
-					},
-					//指令所在元素被插入页面时
-					inserted(element,binding){
-						element.focus()
-					},
-					//指令所在的模板被重新解析时
-					update(element,binding){
-						element.value = binding.value
-					}
-				}
-			},
-			beforeCreate() {
-				console.log('beforeCreate')
-			},
-			created() {
-				console.log('created')
-			},
-			beforeMount() {
-				console.log('beforeMount')
-			},
-			mounted() {
+            directives: {
+                //big函数何时会被调用？1.指令与元素成功绑定时（一上来）。2.指令所在的模板被重新解析时。
+                /* 'big-number'(element,binding){}, */
+                big(element, binding) {
+                    console.log('big', this) //注意此处的this是window
+                    // console.log('big')
+                    element.innerText = binding.value * 10
+                },
+                fbind: {
+                    //指令与元素成功绑定时（一上来）
+                    bind(element, binding) {
+                        element.value = binding.value
+                    },
+                    //指令所在元素被插入页面时
+                    inserted(element, binding) {
+                        element.focus()
+                    },
+                    //指令所在的模板被重新解析时
+                    update(element, binding) {
+                        element.value = binding.value
+                    }
+                }
+            },
+            beforeCreate() {
+                console.log('beforeCreate')
+            },
+            created() {
+                console.log('created')
+            },
+            beforeMount() {
+                console.log('beforeMount')
+            },
+            mounted() {
                 //Vue完成模板的解析并把初始的真实DOM元素放入页面后（挂载完毕）调用mounted
-				console.log('mounted')
+                console.log('mounted')
                 // this.timer = setInterval(() => {
-				// 	console.log('setInterval')
-				// 	this.opacity -= 0.01
-				// 	if(this.opacity <= 0) this.opacity = 1
-				// },16)
-			},
-			beforeUpdate() {
-				console.log('beforeUpdate')
-			},
-			updated() {
-				console.log('updated')
-			},
-			beforeDestroy() {
-				console.log('beforeDestroy')
+                // 	console.log('setInterval')
+                // 	this.opacity -= 0.01
+                // 	if(this.opacity <= 0) this.opacity = 1
+                // },16)
+            },
+            beforeUpdate() {
+                console.log('beforeUpdate')
+            },
+            updated() {
+                console.log('updated')
+            },
+            beforeDestroy() {
+                console.log('beforeDestroy')
                 // clearInterval(this.timer)
-			},
-			destroyed() {
-				console.log('destroyed')
-			},
+            },
+            destroyed() {
+                console.log('destroyed')
+            },
             //第二步：注册组件（局部注册）
-            components:{ school }
+            components: { school }
         })
         // 监视及深度监视-写法二
         vm.$watch('persion.mingzi', { // 'name'
@@ -424,23 +424,90 @@
             }
         })
 
-        // Object.defineProperty
+
+        //源数据
         /* let person = {
-            age: 22
-        }
-        // console.log(person)
-        Object.defineProperty(person, 'age', {
-            //读取person的age属性时，get函数(getter)就会被调用，且返回值就是age的值
-            get() {
-                console.log('读取age属性了')
-                return age
+            name: '张三',
+            age: 18
+        } */
+
+        //模拟Vue2中实现响应式
+        // Object.defineProperty
+        //#region 
+        /* let p = {}
+        Object.defineProperty(p,'name',{
+            configurable:true,
+            get(){ //有人读取name时调用
+                return person.name
             },
-            //修改person的age属性时，set函数(setter)就会被调用，且会收到修改的具体值
-            set(value) {
-                console.log('修改了age属性，且值是', value)
-                age = value
+            set(value){ //有人修改name时调用
+                console.log('有人修改了name属性，我发现了，我要去更新界面！')
+                person.name = value
+            }
+        })
+        Object.defineProperty(p,'age',{
+            get(){ //有人读取age时调用
+                return person.age
+            },
+            set(value){ //有人修改age时调用
+                console.log('有人修改了age属性，我发现了，我要去更新界面！')
+                person.age = value
             }
         }) */
+        //#endregion
+
+        //模拟Vue3中实现响应式
+        //#region 
+        /* const p = new Proxy(person, {
+            //有人读取p的某个属性时调用
+            get(target, propName) {
+                console.log(`有人读取了p身上的${propName}属性`)
+                return Reflect.get(target, propName)
+            },
+            //有人修改p的某个属性、或给p追加某个属性时调用
+            set(target, propName, value) {
+                console.log(`有人修改了p身上的${propName}属性，我要去更新界面了！`)
+                Reflect.set(target, propName, value)
+            },
+            //有人删除p的某个属性时调用
+            deleteProperty(target, propName) {
+                console.log(`有人删除了p身上的${propName}属性，我要去更新界面了！`)
+                return Reflect.deleteProperty(target, propName)
+            }
+        }) */
+        //#endregion
+
+
+        /* // 模拟一个数据监测
+        let data = {
+            name:'名字',
+            address:'北京',
+        }
+
+        //创建一个监视的实例对象，用于监视data中属性的变化
+        const obs = new Observer(data)		
+        console.log(obs)	
+
+        //准备一个vm实例对象
+        let vm = {}
+        vm._data = data = obs
+
+        function Observer(obj){
+            //汇总对象中所有的属性形成一个数组
+            const keys = Object.keys(obj)
+            //遍历
+            keys.forEach((k)=>{
+                Object.defineProperty(this,k,{
+                    get(){
+                        return obj[k]
+                    },
+                    set(val){
+                        console.log(`${k}被改了，我要去解析模板，生成虚拟DOM..`)
+                        obj[k] = val
+                    }
+                })
+            })
+        } */
     </script>
 </body>
 
